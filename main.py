@@ -1,4 +1,23 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
+
+
+class DatasetEntrada(BaseModel):
+    """Dados que o cliente envia para cadastrar ou editar um dataset."""
+
+    nome: str
+    descricao: str
+    fonte: str
+    formato: str
+    camada: str
+    responsavel: str
+
+
+class DatasetSaida(DatasetEntrada):
+    """Dados que a API devolve: os mesmos campos de entrada, mais o id gerado pelo servidor."""
+
+    id: int
+
 
 app = FastAPI(
     title="API Catálogo de Datasets",
