@@ -19,6 +19,37 @@ class DatasetSaida(DatasetEntrada):
     id: int
 
 
+datasets: list[DatasetSaida] = [
+    DatasetSaida(
+        id=1,
+        nome="vendas_2026",
+        descricao="Vendas diárias por loja, usadas no dashboard de faturamento",
+        fonte="Oracle",
+        formato="csv",
+        camada="bronze",
+        responsavel="Time de Vendas",
+    ),
+    DatasetSaida(
+        id=2,
+        nome="clientes_ativos",
+        descricao="Base de clientes com ao menos uma compra nos últimos 12 meses",
+        fonte="PostgreSQL",
+        formato="parquet",
+        camada="prata",
+        responsavel="Time de Marketing",
+    ),
+    DatasetSaida(
+        id=3,
+        nome="indicadores_financeiros",
+        descricao="Indicadores consolidados para o relatório mensal da diretoria",
+        fonte="S3",
+        formato="json",
+        camada="ouro",
+        responsavel="Time Financeiro",
+    ),
+]
+
+
 app = FastAPI(
     title="API Catálogo de Datasets",
     description="API REST simples para cadastrar e consultar metadados de datasets.",
