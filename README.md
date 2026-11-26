@@ -113,3 +113,73 @@ Resposta (`201 Created`):
   "responsavel": "Time de Vendas"
 }
 ```
+
+## Git Flow
+
+```mermaid
+%%{init: {'gitGraph': {'mainBranchName': 'master'}}}%%
+gitGraph
+    commit id: "README inicial"
+    branch develop
+    checkout develop
+
+    branch "feature/estrutura-inicial"
+    commit id: "estrutura inicial"
+    checkout develop
+    merge "feature/estrutura-inicial"
+
+    branch "feature/modelo-dataset"
+    commit id: "modelo e lista em memória"
+    checkout develop
+    merge "feature/modelo-dataset"
+
+    branch "feature/listar-datasets"
+    commit id: "rotas de leitura (GET)"
+    checkout develop
+    merge "feature/listar-datasets"
+
+    branch "feature/cadastrar-dataset"
+    commit id: "rota de cadastro (POST)"
+    checkout develop
+    merge "feature/cadastrar-dataset"
+
+    branch "feature/editar-dataset"
+    commit id: "rota de edição (PUT)"
+    checkout develop
+    merge "feature/editar-dataset"
+
+    branch "feature/remover-dataset"
+    commit id: "rota de remoção (DELETE)"
+    checkout develop
+    merge "feature/remover-dataset"
+
+    branch "feature/testes"
+    commit id: "testes com pytest"
+    checkout develop
+    merge "feature/testes"
+
+    branch "feature/documentacao"
+    commit id: "documentação"
+    checkout develop
+    merge "feature/documentacao"
+
+    checkout master
+    merge develop tag: "v1.0.0"
+
+    branch "hotfix/nome-duplicado"
+    commit id: "409 para nome duplicado"
+    checkout master
+    merge "hotfix/nome-duplicado" tag: "v1.0.1"
+    checkout develop
+    merge "hotfix/nome-duplicado"
+
+    branch "feature/filtro-camada"
+    commit id: "filtro por camada"
+    checkout develop
+    merge "feature/filtro-camada"
+
+    checkout master
+    merge develop tag: "v1.1.0"
+```
+
+O projeto segue o Git Flow: a `master` guarda só as versões estáveis (marcadas com tags), a `develop` integra as funcionalidades, cada `feature/*` nasce da `develop` e volta a ela por Pull Request, e correções urgentes saem de um `hotfix/*` direto da `master` e voltam para a `master` e para a `develop`.
