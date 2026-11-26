@@ -108,3 +108,10 @@ def editar_dataset(dataset_id: int, dataset: DatasetEntrada) -> DatasetSaida:
     dataset_atualizado = DatasetSaida(id=dataset_id, **dataset.model_dump())
     datasets[indice] = dataset_atualizado
     return dataset_atualizado
+
+
+@app.delete("/datasets/{dataset_id}")
+def remover_dataset(dataset_id: int):
+    """Remove um dataset do catálogo."""
+    indice = localizar_indice_ou_404(dataset_id)
+    datasets.pop(indice)
