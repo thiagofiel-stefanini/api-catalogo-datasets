@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel
 
 
@@ -74,3 +74,6 @@ def buscar_dataset(dataset_id: int) -> DatasetSaida:
     for dataset in datasets:
         if dataset.id == dataset_id:
             return dataset
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND, detail="Dataset não encontrado"
+    )
