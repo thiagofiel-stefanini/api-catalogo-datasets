@@ -8,6 +8,20 @@ Em empresas grandes, os dados ficam espalhados em bancos, arquivos e data lakes,
 
 Esta API é uma versão mínima desse catálogo, com as operações de cadastro, consulta, edição e remoção.
 
+## Modelo de dados
+
+| Campo | Tipo | Quem preenche | Exemplo |
+|---|---|---|---|
+| id | inteiro | servidor (automático) | 1 |
+| nome | texto | cliente | `vendas_2026` |
+| descricao | texto | cliente | "Vendas diárias por loja" |
+| fonte | texto | cliente | "Oracle" |
+| formato | texto | cliente | "csv", "parquet" ou "json" |
+| camada | texto | cliente | "bronze", "prata" ou "ouro" |
+| responsavel | texto | cliente | "Time de Vendas" |
+
+O campo `camada` segue o conceito de arquitetura medalhão (Lakehouse): **bronze** são os dados crus, como chegaram da fonte; **prata**, os dados já limpos e padronizados; **ouro**, os dados prontos para o negócio, como relatórios e dashboards.
+
 ## Como executar
 
 Pré-requisitos: Python 3.11 ou mais novo e Git.
