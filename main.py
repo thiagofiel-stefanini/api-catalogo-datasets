@@ -60,3 +60,9 @@ app = FastAPI(
 @app.get("/health")
 def health_check():
     return {"status": "ok"}
+
+
+@app.get("/datasets")
+def listar_datasets() -> list[DatasetSaida]:
+    """Lista todos os datasets cadastrados no catálogo."""
+    return datasets
