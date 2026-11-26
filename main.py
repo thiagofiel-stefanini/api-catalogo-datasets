@@ -67,10 +67,15 @@ def localizar_indice_ou_404(dataset_id: int) -> int:
     )
 
 
+def nome_ja_cadastrado(nome: str) -> bool:
+    """Informa se já existe um dataset com esse nome, ignorando maiúsculas e minúsculas."""
+    return any(dataset.nome.casefold() == nome.casefold() for dataset in datasets)
+
+
 app = FastAPI(
     title="API Catálogo de Datasets",
     description="API REST simples para cadastrar e consultar metadados de datasets.",
-    version="1.0.0",
+    version="1.0.1",
 )
 
 
@@ -94,7 +99,12 @@ def buscar_dataset(dataset_id: int) -> DatasetSaida:
 
 @app.post("/datasets", status_code=status.HTTP_201_CREATED)
 def cadastrar_dataset(dataset: DatasetEntrada) -> DatasetSaida:
-    """Cadastra um novo dataset no catálogo."""
+    """Cadastra um novo dataset no catálogo. Recusa nomes já cadastrados com 409."""
+    if nome_ja_cadastrado(dataset.nome):
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Já existe um dataset com esse nome",
+        )
     novo_id = gerar_novo_id()
     novo_dataset = DatasetSaida(id=novo_id, **dataset.model_dump())
     datasets.append(novo_dataset)
