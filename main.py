@@ -66,3 +66,11 @@ def health_check():
 def listar_datasets() -> list[DatasetSaida]:
     """Lista todos os datasets cadastrados no catálogo."""
     return datasets
+
+
+@app.get("/datasets/{dataset_id}")
+def buscar_dataset(dataset_id: int) -> DatasetSaida:
+    """Busca um dataset pelo id."""
+    for dataset in datasets:
+        if dataset.id == dataset_id:
+            return dataset
