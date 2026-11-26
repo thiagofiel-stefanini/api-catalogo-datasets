@@ -77,3 +77,12 @@ def buscar_dataset(dataset_id: int) -> DatasetSaida:
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND, detail="Dataset não encontrado"
     )
+
+
+@app.post("/datasets")
+def cadastrar_dataset(dataset: DatasetEntrada) -> DatasetSaida:
+    """Cadastra um novo dataset no catálogo."""
+    novo_id = len(datasets) + 1
+    novo_dataset = DatasetSaida(id=novo_id, **dataset.model_dump())
+    datasets.append(novo_dataset)
+    return novo_dataset
