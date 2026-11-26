@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -10,7 +12,7 @@ cliente = TestClient(app)
 def dataset_de_teste() -> dict:
     """Cadastra um dataset novo exclusivo para o teste e devolve o JSON cadastrado."""
     corpo = {
-        "nome": "dataset_temporario",
+        "nome": f"dataset_temporario_{uuid4().hex}",
         "descricao": "Dataset criado só para um teste automatizado",
         "fonte": "Teste",
         "formato": "csv",
