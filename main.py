@@ -75,7 +75,7 @@ def nome_ja_cadastrado(nome: str) -> bool:
 app = FastAPI(
     title="API Catálogo de Datasets",
     description="API REST simples para cadastrar e consultar metadados de datasets.",
-    version="1.0.0",
+    version="1.0.1",
 )
 
 
