@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel
 
 
@@ -60,3 +60,20 @@ app = FastAPI(
 @app.get("/health")
 def health_check():
     return {"status": "ok"}
+
+
+@app.get("/datasets")
+def listar_datasets() -> list[DatasetSaida]:
+    """Lista todos os datasets cadastrados no catálogo."""
+    return datasets
+
+
+@app.get("/datasets/{dataset_id}")
+def buscar_dataset(dataset_id: int) -> DatasetSaida:
+    """Busca um dataset pelo id."""
+    for dataset in datasets:
+        if dataset.id == dataset_id:
+            return dataset
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND, detail="Dataset não encontrado"
+    )
