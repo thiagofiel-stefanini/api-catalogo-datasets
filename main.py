@@ -110,7 +110,7 @@ def editar_dataset(dataset_id: int, dataset: DatasetEntrada) -> DatasetSaida:
     return dataset_atualizado
 
 
-@app.delete("/datasets/{dataset_id}")
+@app.delete("/datasets/{dataset_id}", status_code=status.HTTP_204_NO_CONTENT)
 def remover_dataset(dataset_id: int):
     """Remove um dataset do catálogo."""
     indice = localizar_indice_ou_404(dataset_id)
