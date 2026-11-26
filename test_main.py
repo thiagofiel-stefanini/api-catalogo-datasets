@@ -123,3 +123,36 @@ def test_remover_dataset_inexistente_retorna_404() -> None:
     """DELETE /datasets/{id} com um id inexistente deve responder 404."""
     resposta = cliente.delete("/datasets/999")
     assert resposta.status_code == 404
+
+
+def test_cadastrar_dataset_com_nome_duplicado_retorna_409(dataset_de_teste: dict) -> None:
+    """POST /datasets com um nome já cadastrado deve responder 409 e não cadastrar nada."""
+    corpo = {
+        "nome": dataset_de_teste["nome"],
+        "descricao": "Tentativa de cadastrar um nome repetido",
+        "fonte": "Teste",
+        "formato": "csv",
+        "camada": "bronze",
+        "responsavel": "Suite de testes",
+    }
+    total_antes = len(cliente.get("/datasets").json())
+    resposta = cliente.post("/datasets", json=corpo)
+    total_depois = len(cliente.get("/datasets").json())
+    assert resposta.status_code == 409
+    assert total_depois == total_antes
+
+
+def test_cadastrar_dataset_com_nome_duplicado_em_maiusculas_retorna_409(
+    dataset_de_teste: dict,
+) -> None:
+    """POST /datasets com o mesmo nome em maiúsculas também deve responder 409."""
+    corpo = {
+        "nome": dataset_de_teste["nome"].upper(),
+        "descricao": "Tentativa de cadastrar o mesmo nome em maiúsculas",
+        "fonte": "Teste",
+        "formato": "csv",
+        "camada": "bronze",
+        "responsavel": "Suite de testes",
+    }
+    resposta = cliente.post("/datasets", json=corpo)
+    assert resposta.status_code == 409
