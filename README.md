@@ -66,3 +66,32 @@ Pré-requisitos: Python 3.11 ou mais novo e Git.
    ```
 
 5. Acesse a documentação interativa em http://127.0.0.1:8000/docs.
+
+## Exemplos
+
+Requisição `POST /datasets`:
+
+```json
+{
+  "nome": "vendas_2026",
+  "descricao": "Vendas diárias por loja, usadas no dashboard de faturamento",
+  "fonte": "Oracle",
+  "formato": "csv",
+  "camada": "bronze",
+  "responsavel": "Time de Vendas"
+}
+```
+
+Resposta (`201 Created`):
+
+```json
+{
+  "id": 1,
+  "nome": "vendas_2026",
+  "descricao": "Vendas diárias por loja, usadas no dashboard de faturamento",
+  "fonte": "Oracle",
+  "formato": "csv",
+  "camada": "bronze",
+  "responsavel": "Time de Vendas"
+}
+```
