@@ -50,6 +50,13 @@ datasets: list[DatasetSaida] = [
 ]
 
 
+def gerar_novo_id() -> int:
+    """Gera o próximo id disponível, com base no maior id já usado na lista."""
+    if not datasets:
+        return 1
+    return max(dataset.id for dataset in datasets) + 1
+
+
 app = FastAPI(
     title="API Catálogo de Datasets",
     description="API REST simples para cadastrar e consultar metadados de datasets.",
@@ -77,3 +84,12 @@ def buscar_dataset(dataset_id: int) -> DatasetSaida:
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND, detail="Dataset não encontrado"
     )
+
+
+@app.post("/datasets", status_code=status.HTTP_201_CREATED)
+def cadastrar_dataset(dataset: DatasetEntrada) -> DatasetSaida:
+    """Cadastra um novo dataset no catálogo."""
+    novo_id = gerar_novo_id()
+    novo_dataset = DatasetSaida(id=novo_id, **dataset.model_dump())
+    datasets.append(novo_dataset)
+    return novo_dataset
