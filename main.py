@@ -86,7 +86,7 @@ def buscar_dataset(dataset_id: int) -> DatasetSaida:
     )
 
 
-@app.post("/datasets")
+@app.post("/datasets", status_code=status.HTTP_201_CREATED)
 def cadastrar_dataset(dataset: DatasetEntrada) -> DatasetSaida:
     """Cadastra um novo dataset no catálogo."""
     novo_id = gerar_novo_id()
