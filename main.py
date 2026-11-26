@@ -57,6 +57,16 @@ def gerar_novo_id() -> int:
     return max(dataset.id for dataset in datasets) + 1
 
 
+def localizar_indice_ou_404(dataset_id: int) -> int:
+    """Retorna a posição do dataset na lista, ou lança 404 se o id não existir."""
+    for indice, dataset in enumerate(datasets):
+        if dataset.id == dataset_id:
+            return indice
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND, detail="Dataset não encontrado"
+    )
+
+
 app = FastAPI(
     title="API Catálogo de Datasets",
     description="API REST simples para cadastrar e consultar metadados de datasets.",
@@ -78,12 +88,8 @@ def listar_datasets() -> list[DatasetSaida]:
 @app.get("/datasets/{dataset_id}")
 def buscar_dataset(dataset_id: int) -> DatasetSaida:
     """Busca um dataset pelo id."""
-    for dataset in datasets:
-        if dataset.id == dataset_id:
-            return dataset
-    raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND, detail="Dataset não encontrado"
-    )
+    indice = localizar_indice_ou_404(dataset_id)
+    return datasets[indice]
 
 
 @app.post("/datasets", status_code=status.HTTP_201_CREATED)
@@ -93,3 +99,12 @@ def cadastrar_dataset(dataset: DatasetEntrada) -> DatasetSaida:
     novo_dataset = DatasetSaida(id=novo_id, **dataset.model_dump())
     datasets.append(novo_dataset)
     return novo_dataset
+
+
+@app.put("/datasets/{dataset_id}")
+def editar_dataset(dataset_id: int, dataset: DatasetEntrada) -> DatasetSaida:
+    """Edita um dataset existente, substituindo todos os seus campos."""
+    indice = localizar_indice_ou_404(dataset_id)
+    dataset_atualizado = DatasetSaida(id=dataset_id, **dataset.model_dump())
+    datasets[indice] = dataset_atualizado
+    return dataset_atualizado
