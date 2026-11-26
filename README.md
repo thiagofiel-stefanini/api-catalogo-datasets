@@ -22,6 +22,17 @@ Esta API é uma versão mínima desse catálogo, com as operações de cadastro,
 
 O campo `camada` segue o conceito de arquitetura medalhão (Lakehouse): **bronze** são os dados crus, como chegaram da fonte; **prata**, os dados já limpos e padronizados; **ouro**, os dados prontos para o negócio, como relatórios e dashboards.
 
+## Endpoints
+
+| Método | Rota | O que faz | Status de sucesso | Erro |
+|---|---|---|---|---|
+| GET | `/health` | Verifica se a API está no ar | 200 | - |
+| GET | `/datasets` | Lista todos os datasets | 200 | - |
+| GET | `/datasets/{id}` | Busca um dataset pelo id | 200 | 404 |
+| POST | `/datasets` | Cadastra um novo dataset | 201 | 422 |
+| PUT | `/datasets/{id}` | Edita um dataset existente | 200 | 404 |
+| DELETE | `/datasets/{id}` | Remove um dataset | 204 | 404 |
+
 ## Como executar
 
 Pré-requisitos: Python 3.11 ou mais novo e Git.
