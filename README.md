@@ -183,3 +183,13 @@ gitGraph
 ```
 
 O projeto segue o Git Flow: a `master` guarda só as versões estáveis (marcadas com tags), a `develop` integra as funcionalidades, cada `feature/*` nasce da `develop` e volta a ela por Pull Request, e correções urgentes saem de um `hotfix/*` direto da `master` e voltam para a `master` e para a `develop`.
+
+## Changelog
+
+### 1.0.1
+
+- Corrige o `POST /datasets`: passa a responder `409 Conflict` quando já existe um dataset com o mesmo nome, sem diferenciar maiúsculas de minúsculas
+
+### 1.0.0
+
+- Primeira versão: cadastro, consulta, edição e remoção de datasets, com testes automatizados e documentação no README
