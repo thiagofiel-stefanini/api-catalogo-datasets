@@ -8,6 +8,24 @@ Em empresas grandes, os dados ficam espalhados em bancos, arquivos e data lakes,
 
 Esta API é uma versão mínima desse catálogo, com as operações de cadastro, consulta, edição e remoção.
 
+## Arquitetura
+
+```mermaid
+flowchart TD
+    Cliente[Cliente] -->|requisição HTTP| Uvicorn[Uvicorn]
+    Uvicorn --> Rotas[Rotas FastAPI]
+    Rotas --> ComCorpo{Rota tem corpo?<br/>POST ou PUT}
+    ComCorpo -->|sim| Pydantic[Validação Pydantic<br/>DatasetEntrada]
+    ComCorpo -->|não| Lista[Lista em memória]
+    Pydantic -->|dados válidos| Lista
+    Pydantic -->|dados inválidos| Erro422[Erro 422]
+    Lista --> Resposta[Resposta JSON]
+    Erro422 --> Cliente
+    Resposta --> Cliente
+```
+
+O cliente envia a requisição HTTP, que o Uvicorn recebe e passa para a rota correspondente do FastAPI. Rotas com corpo (`POST` e `PUT`) passam primeiro pela validação do Pydantic: se os dados forem inválidos, a API responde `422` direto, sem tocar na lista em memória; se forem válidos (ou se a rota não tem corpo, como `GET` e `DELETE`), a requisição chega até a lista em memória, que guarda os datasets, e a API devolve a resposta em JSON.
+
 ## Modelo de dados
 
 | Campo | Tipo | Quem preenche | Exemplo |
